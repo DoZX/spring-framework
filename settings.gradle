@@ -12,7 +12,7 @@ plugins {
 }
 
 include "spring-aop"
-include "spring-aspects"
+// include "spring-aspects" does not compile due to references to aspect types unknown to IntelliJ IDEA. See https://youtrack.jetbrains.com/issue/IDEA-64446 for details.
 include "spring-beans"
 include "spring-context"
 include "spring-context-indexer"
@@ -55,3 +55,5 @@ settings.gradle.projectsLoaded {
 		}
 	}
 }
+
+include 'dozx-study'
