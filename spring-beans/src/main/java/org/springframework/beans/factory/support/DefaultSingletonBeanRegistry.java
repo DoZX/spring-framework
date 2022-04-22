@@ -154,10 +154,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
-			if (!this.singletonObjects.containsKey(beanName)) {
-				this.singletonFactories.put(beanName, singletonFactory);
-				this.earlySingletonObjects.remove(beanName);
-				this.registeredSingletons.add(beanName);
+			if (!this.singletonObjects.containsKey(beanName)) { // [Spring-Read] 一级缓存没有beanName
+				this.singletonFactories.put(beanName, singletonFactory);  // [Spring-Read] 三级缓存 Map(beanName, (beanName, mbd, bean ))
+				this.earlySingletonObjects.remove(beanName);  // [Spring-Read] 删除二级缓存中的内容
+				this.registeredSingletons.add(beanName);  // [Spring-Read] 注册Bean
 			}
 		}
 	}
@@ -176,24 +176,25 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param allowEarlyReference whether early references should be created or not
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
+	// [Spring-Read] 给属性赋值
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		// Quick check for existing instance without full singleton lock
 		Object singletonObject = this.singletonObjects.get(beanName);
-		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {  // [Spring-Read] 一级缓存没有Bean, 正在创建中
 			singletonObject = this.earlySingletonObjects.get(beanName);
-			if (singletonObject == null && allowEarlyReference) {
+			if (singletonObject == null && allowEarlyReference) {  // [Spring-Read] 二级缓存没有Bean, 允许循环引用
 				synchronized (this.singletonObjects) {
 					// Consistent creation of early reference within full singleton lock
 					singletonObject = this.singletonObjects.get(beanName);
 					if (singletonObject == null) {
-						singletonObject = this.earlySingletonObjects.get(beanName);
+						singletonObject = this.earlySingletonObjects.get(beanName);  // [Spring-Read] 双重锁
 						if (singletonObject == null) {
-							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);  // [Spring-Read] 去三级缓存获取元信息（Lambdas）
 							if (singletonFactory != null) {
-								singletonObject = singletonFactory.getObject();
-								this.earlySingletonObjects.put(beanName, singletonObject);
-								this.singletonFactories.remove(beanName);
+								singletonObject = singletonFactory.getObject();  // [Spring-Read] 执行Lambdas，获取Bean
+								this.earlySingletonObjects.put(beanName, singletonObject);  // [Spring-Read] Bean存到二级缓存
+								this.singletonFactories.remove(beanName);  // [Spring-Read] 三级缓存移除（单例Bean）
 							}
 						}
 					}

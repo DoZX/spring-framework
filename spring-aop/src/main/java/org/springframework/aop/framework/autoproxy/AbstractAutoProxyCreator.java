@@ -237,6 +237,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		return null;
 	}
 
+	// [Spring-Read] 循环依赖时，执行三级缓存的Lambdas，获取普通对象 or 代理对象
 	@Override
 	public Object getEarlyBeanReference(Object bean, String beanName) {
 		Object cacheKey = getCacheKey(bean.getClass(), beanName);
@@ -289,7 +290,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
 		if (bean != null) {
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
-			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
+			if (this.earlyProxyReferences.remove(cacheKey) != bean) {  // [Spring-Read] 是否在三级缓存中已经过获取代理对象
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
 		}
@@ -344,7 +345,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
-			return proxy;
+			return proxy;  // 得到代理对象
 		}
 
 		this.advisedBeans.put(cacheKey, Boolean.FALSE);

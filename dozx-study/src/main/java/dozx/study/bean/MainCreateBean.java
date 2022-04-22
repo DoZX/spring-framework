@@ -32,7 +32,7 @@ public class MainCreateBean {
 	}
 }
 
-@Configuration  // 这个注解比较特殊，
+@Configuration  // Configuration注解生产代理对象（super.Method()去调用方法），最终是Spring创建Bean，而不是Java创建对象
 @ComponentScan("dozx.study.bean")
 @EnableAspectJAutoProxy
 class Config {
