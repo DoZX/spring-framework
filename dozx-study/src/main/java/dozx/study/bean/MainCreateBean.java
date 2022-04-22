@@ -49,7 +49,7 @@ class BeanA {
 @Component
 class BeanABeforeInstantiation implements InitializingBean {
 	@PostConstruct  // BEAN-CASE1: Spring初始化前会调用
-	public void BeanABeforeInstantiation() {
+	public void beanABeforeInstantiation() {
 		System.out.println("BeanABeforeInstantiation 初始化前, BeanABeforeInstantiation()");
 	}
 
