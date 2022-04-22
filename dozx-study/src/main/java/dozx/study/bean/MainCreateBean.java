@@ -1,10 +1,13 @@
 package dozx.study.bean;
 
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +18,23 @@ public class MainCreateBean {
 	public static void main(String[] args) {
 		System.out.println("==========  START  ==========");
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
+
+		// getBean
 		Map<String, BeanA> beansOfType = applicationContext.getBeansOfType(BeanA.class);
 		BeanA beanA = (BeanA) applicationContext.getBean("beanA");
 		beanA.getBeanBObject();
+
+		// AOP
+		BeanC beanC = (BeanC) applicationContext.getBean("beanC");
+		beanC.aspectMethod();
+
 		System.out.println("========== SUCCESS ==========");
 	}
 }
 
+@Configuration  // 这个注解比较特殊，
 @ComponentScan("dozx.study.bean")
+@EnableAspectJAutoProxy
 class Config {
 
 }
@@ -66,8 +78,23 @@ class BeanB {
 
 }
 
-// 切面Bean
-class AspectBeanC {
+@Service
+class BeanC {
+	@Autowired
+	private BeanB beanB;
 
+	public void aspectMethod() {
+		System.out.println(beanB);
+	}
+}
+
+// 对BeanC做切面
+@Aspect
+@Component
+class AspectBeanC {
+	@Before("execution(public void dozx.study.bean.BeanC.aspectMethod())")
+	public void aspectBeanCBeforeMethod() {
+		System.out.println("AspectBeanC aspectBeanCBeforeMethod()");
+	}
 }
 
