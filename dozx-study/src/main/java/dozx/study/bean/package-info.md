@@ -48,3 +48,21 @@ Bean创建过程（三级缓存解决循环依赖）：
 循环依赖需要使用@Async时，需要增加@Lazy
 带有@Lazy的属性，并不会直接去创建普通对象，而是创建代理对象去赋值给属性
 @Lazy在调用时才会去Spring容器中找Bean
+
+- 初始化过程（只记录Bean对象创建的链路）
+1. org.springframework.context.annotation.AnnotationConfigApplicationContext(Class<?>... componentClasses)
+2. org.springframework.context.support.AbstractApplicationContext:refresh()
+3. org.springframework.context.support.AbstractApplicationContext:finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory)
+4. org.springframework.beans.factory.support.DefaultListableBeanFactory:preInstantiateSingletons()
+5. org.springframework.beans.factory.support.AbstractBeanFactory:getBean(String name)
+6. org.springframework.beans.factory.support.AbstractBeanFactory:doGetBean(String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
+7. org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory:createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+8. org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory:doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+9. org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory:createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+10. org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory:instantiateBean(String beanName, RootBeanDefinition mbd)
+11. org.springframework.beans.factory.support.SimpleInstantiationStrategy:instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner)
+12. org.springframework.beans.BeanUtils:instantiateClass(Constructor<T> ctor, Object... args)
+13. java.lang.reflect.Constructor:newInstance(Object ... initargs)
+14. sun.reflect.DelegatingConstructorAccessorImpl:newInstance(Object[] args)
+15. sun.reflect.NativeConstructorAccessorImpl:newInstance(Object[] args)
+16. sun.reflect.NativeConstructorAccessorImpl:private static native Object newInstance0(Constructor<?> c, Object[] args) throws InstantiationException, IllegalArgumentException, InvocationTargetException;
