@@ -50,8 +50,8 @@ public class DoZXApplicationContext {
 					String rootFileAbsolutePath = rootFile.getAbsolutePath();  // 文件绝对路径
 					if (rootFileAbsolutePath.endsWith(".class")) {
 						// 获取className
-						String className = rootFileAbsolutePath.substring(rootFileAbsolutePath.indexOf("dozx\\study"), rootFileAbsolutePath.indexOf(".class"));
-						className = className.replace("\\", ".");
+						String className = rootFileAbsolutePath.substring(rootFileAbsolutePath.indexOf((System.getProperty("os.name").startsWith("Windows")) ? "dozx\\study" : "dozx/study"), rootFileAbsolutePath.indexOf(".class"));
+						className = className.replace((System.getProperty("os.name").startsWith("Windows")) ? "\\" : "/", ".");
 
 						// 加载类，获取class元信息
 						Class<?> clazz = classLoader.loadClass(className);
