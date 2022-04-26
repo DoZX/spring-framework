@@ -17,6 +17,7 @@ import java.util.Map;
 public class MainCreateBean {
 	public static void main(String[] args) {
 		System.out.println("==========  START  ==========");
+		// [Spring-Read] 创建Bean_1
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
 
 		// getBean

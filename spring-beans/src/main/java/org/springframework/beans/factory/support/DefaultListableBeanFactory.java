@@ -950,6 +950,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					// [Spring-Read] 创建Bean_5
 					getBean(beanName);
 				}
 			}

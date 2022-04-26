@@ -49,7 +49,7 @@ Bean创建过程（三级缓存解决循环依赖）：
 带有@Lazy的属性，并不会直接去创建普通对象，而是创建代理对象去赋值给属性
 @Lazy在调用时才会去Spring容器中找Bean
 
-- 初始化过程（只记录Bean对象创建的链路）
+- 初始化过程（只记录Bean对象创建的链路），注释：`[Spring-Read] 创建Bean_1`
 1. org.springframework.context.annotation.AnnotationConfigApplicationContext(Class<?>... componentClasses)
 2. org.springframework.context.support.AbstractApplicationContext:refresh()
 3. org.springframework.context.support.AbstractApplicationContext:finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory)

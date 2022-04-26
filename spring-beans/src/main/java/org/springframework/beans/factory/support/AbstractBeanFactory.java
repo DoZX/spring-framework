@@ -205,6 +205,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public Object getBean(String name) throws BeansException {
+		// [Spring-Read] 创建Bean_6
 		return doGetBean(name, null, null, false);
 	}
 
@@ -332,6 +333,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
+							// [Spring-Read] 创建Bean_7
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {
