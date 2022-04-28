@@ -244,6 +244,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 		this.registriesPostProcessed.add(registryId);
 
+		// [Spring-Read] 扫描Bean_7
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -328,6 +329,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
 			StartupStep processConfig = this.applicationStartup.start("spring.context.config-classes.parse");
+			// [Spring-Read] 扫描Bean_8
 			parser.parse(candidates);
 			parser.validate();
 

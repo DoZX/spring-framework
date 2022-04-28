@@ -52,6 +52,7 @@ final class SimpleMetadataReader implements MetadataReader {
 	}
 
 	private static ClassReader getClassReader(Resource resource) throws IOException {
+		// [Spring-Read] ASM技术，而不是把class加载到JVM
 		try (InputStream is = resource.getInputStream()) {
 			try {
 				return new ClassReader(is);

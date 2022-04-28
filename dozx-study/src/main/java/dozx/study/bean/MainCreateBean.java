@@ -2,6 +2,7 @@ package dozx.study.bean;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.asm.ClassReader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,12 +13,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 public class MainCreateBean {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		System.out.println("==========  START  ==========");
 		// [Spring-Read] 创建Bean_1
+		// [Spring-Read] 扫描Bean_1
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
 
 		// getBean
@@ -28,6 +33,12 @@ public class MainCreateBean {
 		// AOP
 		BeanC beanC = (BeanC) applicationContext.getBean("beanC");
 		beanC.aspectMethod();
+
+
+		// ASM org.springframework.asm 包下
+//		ClassReader classReader = new ClassReader(new FileInputStream("xxx.class"));
+//		System.out.println(classReader.getClassName());
+//		System.out.println(classReader.getClass());
 
 		System.out.println("========== SUCCESS ==========");
 	}

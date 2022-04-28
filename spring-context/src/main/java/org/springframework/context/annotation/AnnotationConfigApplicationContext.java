@@ -91,6 +91,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		this();
 		register(componentClasses);
 		// [Spring-Read] 创建Bean_2
+		// [Spring-Read] 扫描Bean_2
 		refresh();
 	}
 

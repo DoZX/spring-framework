@@ -66,3 +66,22 @@ Bean创建过程（三级缓存解决循环依赖）：
 14. sun.reflect.DelegatingConstructorAccessorImpl:newInstance(Object[] args)
 15. sun.reflect.NativeConstructorAccessorImpl:newInstance(Object[] args)
 16. sun.reflect.NativeConstructorAccessorImpl:private static native Object newInstance0(Constructor<?> c, Object[] args) throws InstantiationException, IllegalArgumentException, InvocationTargetException;
+
+
+- 扫描过程（加载class，生成BeanDefinition），注释：`[Spring-Read] 扫描Bean_1`
+1. org.springframework.context.annotation.AnnotationConfigApplicationContext(Class<?>... componentClasses)
+2. org.springframework.context.support.AbstractApplicationContext:refresh()
+3. org.springframework.context.support.AbstractApplicationContext:invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory)
+4. org.springframework.context.support.PostProcessorRegistrationDelegate:invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors)
+5. org.springframework.context.support.PostProcessorRegistrationDelegate:invokeBeanDefinitionRegistryPostProcessors(Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry, ApplicationStartup applicationStartup)
+6. org.springframework.context.annotation.ConfigurationClassPostProcessor:postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
+7. org.springframework.context.annotation.ConfigurationClassPostProcessor:processConfigBeanDefinitions(BeanDefinitionRegistry registry)
+8. org.springframework.context.annotation.ConfigurationClassParser:parse(Set<BeanDefinitionHolder> configCandidates)
+9. org.springframework.context.annotation.ConfigurationClassParser:parse(AnnotationMetadata metadata, String beanName)
+10. org.springframework.context.annotation.ConfigurationClassParser:processConfigurationClass(ConfigurationClass configClass, Predicate<String> filter)
+11. org.springframework.context.annotation.ConfigurationClassParser:doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass, Predicate<String> filter)
+12. org.springframework.context.annotatio.ComponentScanAnnotationParser:parse(AnnotationAttributes componentScan, String declaringClass)
+13. org.springframework.context.annotation.ClassPathBeanDefinitionScanner:doScan(String... basePackages)
+14. org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider:findCandidateComponents(String basePackage)
+15. org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider:scanCandidateComponents(String basePackage)
+16. org.springframework.core.type.classreading.CachingMetadataReaderFactory:getMetadataReader(Resource resource)

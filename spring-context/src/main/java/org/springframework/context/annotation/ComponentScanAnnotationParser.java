@@ -125,6 +125,7 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+		// [Spring-Read] 扫描Bean_13 配置完扫描数据后，开始扫描
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 

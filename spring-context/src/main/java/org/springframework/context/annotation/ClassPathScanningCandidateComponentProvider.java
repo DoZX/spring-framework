@@ -310,9 +310,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
+			// [Spring-Read] 存在/META-INF/spring.components文件时，会进入到这里（为指定的Bean生成Bean对象）
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			// [Spring-Read] 扫描Bean_15
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -418,6 +420,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		try {
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+			// [Spring-Read] 获取扫描路径规则下所有的资源(class文件)
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
@@ -426,7 +429,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					logger.trace("Scanning " + resource);
 				}
 				try {
+					// [Spring-Read] 扫描Bean_16  对每一个资源进行解析（获取元信息）
 					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+					// [Spring-Read] excludeFilters, includeFilters判断
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 						sbd.setSource(resource);
@@ -434,6 +439,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 							if (debugEnabled) {
 								logger.debug("Identified candidate component class: " + resource);
 							}
+							// [Spring-Read] 扫描Bean_17  把BeanDefinition添加到Set<BeanDefinition>中
 							candidates.add(sbd);
 						}
 						else {
